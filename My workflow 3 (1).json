@@ -1,0 +1,190 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recepcion-emails",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "c70968ec-f772-453e-8d44-1471c9b9c185",
+      "name": "Webhook",
+      "webhookId": "f39a681c-dc56-4e75-80e1-73aa5810f12c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dfd1431e-484b-4a22-aaea-2cefa96fcdb4",
+              "name": "categoria ",
+              "value": "reclamo",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -112
+      ],
+      "id": "abdeea0b-c138-42d3-8529-27f0078b9feb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cbe3705f-4677-447a-b2ec-5bb22a33cb7f",
+              "name": "categoria ",
+              "value": "consulta",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        0
+      ],
+      "id": "5d5e3520-84ed-475c-9e8e-9d897c4e3836",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cfe5debe-ca8d-46a8-85d4-d7fbea6ce75b",
+              "name": "consulta",
+              "value": "soporte",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        112
+      ],
+      "id": "93dd7dc0-27cb-4a89-9967-a023a773d4a2",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Clasificá el siguiente correo de un cliente en una de estas categorías: reclamo, consulta o soporte.\n\nCorreo: {{ $json.body.asunto }}\n\nRespondé SOLO con una palabra: reclamo, consulta o soporte.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Sos un clasificador de correos. Solo respondés con una palabra: reclamo, consulta o soporte."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        192,
+        0
+      ],
+      "id": "cf0d26e5-e768-47d3-ba7f-d636f1d0ddfe",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        224,
+        160
+      ],
+      "id": "c66c11d7-315d-4e1a-a966-e64b4fab480a",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "m1YnaKtlMMw9cB0E",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6873545d-1d58-450b-a13e-c432b45347ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f5d77ccf12f69e08fb694d419afecbe667b45b486815cfbb90ffe0d675a1a02d"
+  },
+  "id": "3op4KpZwXh5Kh7GK",
+  "tags": []
+}
